@@ -90,19 +90,38 @@
                 margin: 0 0 20px;
                 display: flex;
                 flex-direction: row;
-                justify-content: space-between;
+                justify-content: space-evenly;
+                align-items: center;
                 gap: 10px;  
-                >button {
-                    background: transparent;
-                    padding: 0;
-                    outline: none;
-                    border: none;
+                &__left {
+                    flex: 1;
+                }
+                &__period {
                     display: flex;
-                    cursor: pointer;
-                    >img {
-                        width: 18px;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    flex: 1;
+                    >span {
+                        font-size: 18px;
                     }
-                }              
+                }
+                &__buttons {
+                    display: flex;
+                    justify-content: flex-end;
+                    flex: 1;
+                    >button { 
+                        background: transparent;
+                        padding: 0;
+                        outline: none;
+                        border: none;
+                        display: flex;
+                        cursor: pointer;
+                        >img {
+                            width: 18px;
+                        }
+                    }     
+                }         
             }
             .balance {
                 border-radius: 16px;

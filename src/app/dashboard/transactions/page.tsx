@@ -17,10 +17,11 @@ export default function Page(){
     const [date, setDate] = useState('' as string);
     const [type, setType] = useState('1' as string);
     const [recurring, setRecurring] = useState('1' as string);
+    const [currentDate, setCurrentDate] = useState('' as string);
 
     // Requests
     const fetchTransactions = async () => {
-        const response = await fetch(`/api/transactions?token=${Cookies.get('userLogged')}`);
+        const response = await fetch(`/api/transactions?date=${getCurrentDate()}&token=${Cookies.get('userLogged')}`);
         const data = await response.json();
         setRows(data.transactions);
         const calculateBalance = (rows:any) => {
@@ -37,8 +38,9 @@ export default function Page(){
         setBalance(calculateBalance(data.transactions));
     }
     useEffect(() => {
+        setDate(getCurrentDate());
+        setCurrentDate(getCurrentDate());
         fetchTransactions();
-        getCurrentDate();
     }, []);
 
     // Utils
@@ -54,7 +56,7 @@ export default function Page(){
             day = `0${day}`;
           }
           const formattedDate = `${year}-${month}-${day}`;
-          setDate(formattedDate);
+          return formattedDate;
     }
     const formatDate = (date:string) => {
         const months : {[key: string]:string} = {
@@ -73,6 +75,25 @@ export default function Page(){
         };
         let dateFormatted;
         dateFormatted = `${months[(date).slice(5,7)]} ${(date).slice(8,10)}, ${(date).slice(0,4)}`;
+        return dateFormatted;
+    }
+    const formatPeriod = (date:string) => {
+        const months : {[key: string]:string} = {
+            '01': 'January',
+            '02': 'February',
+            '03': 'March',
+            '04': 'April',
+            '05': 'May',
+            '06': 'June',
+            '07': 'July',
+            '08': 'August',
+            '09': 'September',
+            '10': 'October',
+            '11': 'November',
+            '12': 'December'
+        };
+        let dateFormatted;
+        dateFormatted = `${months[(date).slice(5,7)]} ${(date).slice(0,4)}`;
         return dateFormatted;
     }
     const openPopup = (ref:string) => {
@@ -104,7 +125,7 @@ export default function Page(){
         setDate('');
         setType('1');
         setRecurring('1');
-        getCurrentDate();
+        setDate(getCurrentDate());
         const buttons = document.querySelectorAll('button');
         buttons.forEach(button => {
             if (button) {
@@ -113,7 +134,7 @@ export default function Page(){
         })
     }
     const saveTransaction = async (e:any) => {
-        const response = await fetch(`/api/newTransaction?value=${value}&description=${description}&date=${date}&type=${type}&token=${Cookies.get('userLogged')}`);
+        const response = await fetch(`/api/newTransaction?value=${value}&description=${description}&date=${date}&type=${type}&recurring=${recurring}&token=${Cookies.get('userLogged')}`);
         const data = await response.json();
         if (data.code == 1) {
             closeAllPopups();
@@ -172,10 +193,15 @@ export default function Page(){
     return (
         <>
             <div className="options">
-                <div></div>
-                <button onClick={() => openPopup(`#popup-new-transaction`)}>
-                    <img src="/icons/plus.svg"/> <span className="text text--bold">New transaction</span>
-                </button>
+                <div className="options__left"></div>
+                <div className="options__period">
+                    <span>{formatPeriod(getCurrentDate())}</span>
+                </div>
+                <div className="options__buttons">
+                    <button onClick={() => openPopup(`#popup-new-transaction`)}>
+                        <img src="/icons/plus.svg"/> <span className="text text--bold">New transaction</span>
+                    </button>
+                </div>
                 <div className="popup" id={`popup-new-transaction`}>
                     <div className="popup__box">
                         <div className="popup__box__header">
@@ -220,6 +246,7 @@ export default function Page(){
                     <thead>
                         <tr>
                             <th>Description</th>
+                            <th>Recurring</th>
                             <th>Date</th>
                             <th>Value</th>
                             <th>Actions</th>
@@ -229,6 +256,7 @@ export default function Page(){
                         {rows && rows.map((row:any) => (
                             <tr key={row.id} id={`transaction-${row.id}`}>
                                 <td>{row.description ?? 'No description provided'}</td>
+                                <td>{row.recurring == 1 ? 'Just once' : (row.recurring == 2 ? 'Every month' : (row.recurring == 3 ? 'Every year' : '-'))}</td>
                                 <td>{formatDate(row.date)}</td>
                                 <td className={row.type == 1 ? 'text text--bold text--success' : 'text text--bold text--danger'}>
                                     {row.type == 1 ? '(+)' : '(-)'} {parseFloat(row.value).toFixed(2)} 

@@ -12,6 +12,7 @@ export async function GET(request: Request) {
     const value = urlParams.get('value');    
     const date = urlParams.get('date');    
     const type = urlParams.get('type');    
+    const recurring = urlParams.get('recurring');    
 
     const data = await sql`
         SELECT id FROM users
@@ -21,7 +22,7 @@ export async function GET(request: Request) {
     let response;
 
     if (data.rows.length && description && value && date && type) {
-        const insert = await sql`INSERT INTO transactions (user_id, description, value, date, type) VALUES (${data.rows[0].id}, ${description},${value},${date},${type})`;
+        const insert = await sql`INSERT INTO transactions (user_id, description, value, date, type, recurring) VALUES (${data.rows[0].id}, ${description},${value},${date},${type},${recurring})`;
         if (insert) {
             response = {
                 code: 1,
