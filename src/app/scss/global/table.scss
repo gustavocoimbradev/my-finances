@@ -1,0 +1,77 @@
+.responsive-table {
+    border-radius: 16px;
+    -webkit-box-shadow: 0px 0px 66px -23px rgba(0,0,0,0.05);
+    -moz-box-shadow: 0px 0px 66px -23px rgba(0,0,0,0.05);
+    box-shadow: 0px 0px 66px -23px rgba(0,0,0,0.05);
+    padding: 0;
+    background: white;
+    overflow: hidden;
+    >table {
+        width: 100%;
+        border-collapse: collapse;
+        >thead {
+            >tr {
+                >th {
+                    padding: 18px 10px; 
+                    text-align: center;
+                    border-bottom: solid 1px rgb(230, 230, 230);
+                    &:first-of-type {
+                        text-align: left;
+                        padding-left: 32px;
+                    }
+                    &:last-of-type {
+                        padding-right: 32px;
+                    }
+                }
+            }
+        }
+        >tbody {
+            >tr {
+                >td {
+                    padding: 18px 10px; 
+                    text-align: center;
+                    transition: all .3s ease-in-out;
+                    &:first-of-type {
+                        text-align: left;
+                        padding-left: 32px;
+                    }
+                    &:last-of-type {
+                        padding-right: 32px;
+                    }
+                    >button {
+                        background: transparent;
+                        padding: 0;
+                        outline: none;
+                        border: none;
+                        display: inline-block;
+                        margin: 0;
+                        cursor: pointer;
+                        >img {
+                            width: 16px;
+                        }
+                    }
+                }
+                &.removed {
+                    &--1 {
+                        >td {
+                            background: rgb(255, 239, 239);
+                        }
+                    }
+                    &--2 {
+                        >td {
+                            opacity: 0;
+                        }
+                    }
+                    &--3 {
+                        >td {
+                            height: 0px;
+                            padding: 0px;
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+       
+    }
+}

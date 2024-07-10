@@ -1,0 +1,19 @@
+.text {
+    //Colors
+    &--danger {
+        color: $danger;
+    }
+    &--success {
+        color: $success;
+    }
+    // Weights
+    &--thin {
+        font-weight: 300;
+    }
+    &--normal {
+        font-weight: 400;
+    }
+    &--bold {
+        font-weight: 500;
+    }
+}

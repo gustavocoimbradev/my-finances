@@ -1,0 +1,23 @@
+@import '@/app/scss/mixins/desktop';
+@import '@/app/scss/global/variables';
+
+.logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100dvh;
+    background: $primaryColor;
+    &__box {
+        background: white;
+        height: auto;
+        width: auto;
+        display: flex;
+        flex-direction: column-reverse;
+        padding: 15px 20px;
+        -webkit-box-shadow: 0px 0px 66px -23px rgba(0,0,0,0.29);
+        -moz-box-shadow: 0px 0px 66px -23px rgba(0,0,0,0.29);
+        box-shadow: 0px 0px 66px -23px rgba(0,0,0,0.29);
+        border-radius: 8px;
+        font-size: 14px;
+    }
+}

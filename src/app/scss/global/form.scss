@@ -1,0 +1,83 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    >span {
+        &.error {
+            padding: 10px 16px;
+            border-radius: 99px;
+            font-size: 12px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            background: #ffd1d1;
+            color: rgb(185, 39, 39);
+            &.hidden {
+                display: none;
+            }
+        }
+    }
+    >label {
+        display: block;
+        width: 100%;
+        >span {
+            display: block;
+            font-size: 14px;
+            margin: 0 0 6px;
+            color: #292929;
+        }
+        >input, textarea, select {
+            border: solid 1px #dadada;
+            padding: 10px 16px;
+            width: 100%;
+            outline: none;
+            box-sizing: border-box;
+            border-radius: 100px;
+            display: block;
+            resize: none;
+            background: transparent;
+            &::placeholder {
+                color: #292929;
+            }
+            &.is-invalid {
+                border: solid 1px #f88e8e;
+                background: #fff0f0;
+                &::placeholder {
+                    color: #f88e8e;
+                }
+            }
+        }
+    }
+    >button {
+        cursor: pointer;
+        font-weight: 600;
+        padding: 10px 8px;
+        width: 100%;
+        border: none;
+        outline: none;
+        border-radius: 100px;
+        transition: all .3s ease-in-out;
+        &.bgPrimaryColor {
+            color: white;
+            border: solid 1px $primaryColor;
+            background: $primaryColor;
+        }
+        &.bgSecondaryColor {
+            color: black;
+            border: solid 1px $secondaryColor;
+            background: $secondaryColor;
+        }
+        &.disabled {
+            opacity: .5;
+            pointer-events: none;
+        }
+    }
+    >a {
+        font-size: 12px;
+        margin: 6px 0 0;
+        display: block;
+        color: #292929;
+    }
+}
