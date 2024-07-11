@@ -55,6 +55,7 @@ export default function Layout({
             <div className="dashboard__content">
                 <div className="dashboard__content__header">
                     {currentPage}
+                    <a href="/logout">{logout}</a>
                 </div>
                 <div className="dashboard__content__main">
                     {children}
