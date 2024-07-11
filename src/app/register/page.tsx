@@ -52,7 +52,7 @@ export default function Page(){
             <input autoComplete="off" autoCorrect="off" placeholder="E-mail" type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
           </label>
           <label htmlFor="password">
-            <input autoComplete="off" autoCorrect="off" placeholder="Password" type="password" name="password" id="password" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)}/>
+            <input autoComplete="off" autoCorrect="off" placeholder="Password" type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
           </label>
           <button type="submit" className={isLoading ? 'bgSecondaryColor disabled' : 'bgSecondaryColor'}>Register</button>
           <a href="./login">Already have an account? Login</a>
