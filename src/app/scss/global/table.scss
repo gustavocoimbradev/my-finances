@@ -29,7 +29,7 @@
                     width: calc(70%/5);
 
                     @include mobile {
-                        width: calc(70%/3);
+                        width: calc(70%/4);
                         &:nth-child(2) {
                             display: none;
                         }
