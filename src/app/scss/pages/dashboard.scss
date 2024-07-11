@@ -116,9 +116,7 @@
                 gap: 10px;  
                 user-select: none;
                 &__left {
-                    @include desktop {
-                        flex: 1;
-                    }
+                    flex: 1;
                 }
                 &__period {
                     display: flex;
@@ -162,8 +160,17 @@
                         cursor: pointer;
                         background: rgb(239, 239, 239);
                         text-align: center;
-                        padding: 8px 16px;
+                        padding: 8px;
                         border-radius: 16px;
+                        @include desktop {
+                            padding: 8px 16px;
+                        }
+                        >span {
+                            display: none;
+                            @include desktop {
+                                display: block;
+                            }
+                        }
                         >img {
                             width: 18px;
                         }
