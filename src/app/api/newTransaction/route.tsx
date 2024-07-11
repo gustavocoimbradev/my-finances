@@ -23,7 +23,9 @@ export async function GET(request: Request) {
     let response;
 
     if (data.rows.length && description && value && date && type) {
-        const insert = await sql`INSERT INTO transactions (user_id, description, value, date, type, recurring, paid, from_transaction) VALUES (${data.rows[0].id}, ${description},${value},${date},${type},${recurring},${paid},0)`;
+        const insert = await sql`INSERT INTO transactions (user_id, description, value, date, type, recurring, paid, from_transaction) VALUES (${data.rows[0].id}, ${description}, ${value}, ${date}, ${type}, ${recurring}, ${paid}, 0) RETURNING id`;
+        const transactionId = insert.rows[0].id;
+        await sql`UPDATE transactions SET from_transaction = ${transactionId} WHERE id = ${transactionId}`;
         if (insert) {
             response = {
                 code: 1,

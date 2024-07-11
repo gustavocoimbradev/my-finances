@@ -20,14 +20,7 @@ export async function GET(request: Request) {
         endDate = `${yearStr}-${monthStr}-${lastDay}`;
 
         // Percorre transações com recorrência ativada
-        const checkRecurring = await sql`
-            SELECT 
-                transactions.*
-            FROM transactions
-            INNER JOIN users ON users.id = transactions.user_id
-            WHERE md5(users.email||users.password) = ${token} 
-            AND transactions.recurring = TRUE AND from_transaction = 0 AND transactions.date <= ${endDate}
-        `;
+        const checkRecurring = await sql`SELECT transactions.* FROM transactions INNER JOIN users ON users.id = transactions.user_id WHERE md5(users.email||users.password) = ${token} AND transactions.recurring = TRUE AND from_transaction = transactions.id AND transactions.date <= ${endDate}`;
 
         await Promise.all(checkRecurring.rows.map(async (row) => {
             
@@ -42,6 +35,7 @@ export async function GET(request: Request) {
                 AND transactions.from_transaction = ${row.id}
                 AND transactions.date >= ${startDate}
                 AND transactions.date <= ${endDate}
+                AND transactions.id <> transactions.from_transaction
                 AND NOT EXISTS (
                     SELECT 1 
                     FROM transactions t2
@@ -65,7 +59,7 @@ export async function GET(request: Request) {
             }
      
         }));
-        
+
         const data = await sql`
             SELECT 
                 transactions.id,
@@ -74,11 +68,13 @@ export async function GET(request: Request) {
                 transactions.date,
                 transactions.type,
                 transactions.recurring,
-                transactions.paid
+                transactions.paid,
+                transactions.from_transaction
             FROM transactions
             INNER JOIN users ON users.id = transactions.user_id
             WHERE md5(users.email||users.password) = ${token} 
             AND transactions.date >= ${startDate} AND transactions.date <= ${endDate}
+            AND (transactions.recurring = TRUE and transactions.id <> transactions.from_transaction)
         `;
 
         let response;

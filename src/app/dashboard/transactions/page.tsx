@@ -14,6 +14,7 @@ export default function Page(){
     const [balancePaid, setBalancePaid] = useState(0 as number);
     const [balanceNotPaid, setBalanceNotPaid] = useState(0 as number);
     const [id, setId] = useState('' as string);
+    const [fromTransaction, setFromTransaction] = useState('' as string);
     const [value, setValue] = useState('' as string);
     const [description, setDescription] = useState('' as string);
     const [date, setDate] = useState('' as string);
@@ -127,6 +128,13 @@ export default function Page(){
         }
         if (transaction) {
             const id = ref.replace('#popup-','');
+            const element = document.querySelector(`${ref}`);
+            if (element) {
+                const from_transaction = element.getAttribute('attr-from-transaction');
+                if (from_transaction) {
+                    setFromTransaction(from_transaction);
+                }
+            }
 
             setId(id);
 
@@ -224,7 +232,7 @@ export default function Page(){
         }
     }
     const updateTransaction = async (e:any) => {
-        const response = await fetch(`/api/updateTransaction?paid=${paid}&id=${id}&value=${value}&description=${description}&date=${date}&type=${type}&recurring=${recurring}&token=${Cookies.get('userLogged')}`);
+        const response = await fetch(`/api/updateTransaction?paid=${paid}&id=${id}&value=${value}&description=${description}&date=${date}&from_transaction=${fromTransaction}&token=${Cookies.get('userLogged')}`);
         const data = await response.json();
         if (data.code == 1) {
             closeAllPopups();
@@ -410,7 +418,7 @@ export default function Page(){
                                         <img src="/icons/edit.svg"/>
                                     </button>
                                 </td>
-                                <div className="popup" id={`popup-${row.id}`}>
+                                <div className="popup" id={`popup-${row.id}`} attr-from-transaction={row.from_transaction}>
                                     <div className="popup__box">
                                         <div className="popup__box__header">
                                             <img src="/icons/edit.svg"/>
@@ -420,23 +428,12 @@ export default function Page(){
                                         <div className="popup__box__content">
                                             <form>
                                                 <input required type="hidden" name="id" id="id" value={id}/>
+                                                <input required type="hidden" name="from_transaction" id="from_transaction" value={fromTransaction}/>
                                                 <label htmlFor="description">
                                                     <input required placeholder="Description" name="text" id="text" value={description} onChange={(e) => handleDescription(e.target.value)}/>
                                                 </label>
                                                 <label htmlFor="value">
                                                     <input inputMode="decimal" required placeholder="Value" type="text" name="value" id="value" value={value} onChange={(e) => handleValue(e.target.value)}/>
-                                                </label>
-                                                <label htmlFor="type">
-                                                    <select required name="type" id="type" value={type} onChange={(e) => handleType(e.target.value)}>
-                                                        <option value="1">Income</option>
-                                                        <option value="2">Expense</option>
-                                                    </select>
-                                                </label>
-                                                <label htmlFor="recurring">
-                                                    <select required name="recurring" id="recurring" value={recurring} onChange={(e) => handleRecurring(e.target.value)}>
-                                                        <option value="0">Just once</option>
-                                                        <option value="1">Every month</option>
-                                                    </select>
                                                 </label>
                                                 <label htmlFor="date">
                                                     <input type="date" name="date" id="date" value={date} onChange={(e) => handleDate(e.target.value)}/>
