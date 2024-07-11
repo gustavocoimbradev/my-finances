@@ -60,7 +60,8 @@
         background: #f0f0f0;
         flex: 1;
         @include desktop {
-            padding: 30px 30px 30px 240px;
+            //padding: 30px 30px 30px 240px;
+            padding: 30px;
         }
         &__header {
             display: flex;

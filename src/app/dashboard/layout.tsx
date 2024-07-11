@@ -42,16 +42,16 @@ export default function Layout({
   
     return (
         <div className="dashboard">    
-            <div className="dashboard__sidebar"> 
+            {/* <div className="dashboard__sidebar"> 
                 <nav>
                     <ul>
                         <li><a href="/dashboard/transactions">{transactions}</a></li>
-                        {/* <li><a href="/dashboard/emergency">{emergency}</a></li> */}
-                        {/* <li><a href="/dashboard/investments">{investments}</a></li> */}
+                        <li><a href="/dashboard/emergency">{emergency}</a></li> 
+                        <li><a href="/dashboard/investments">{investments}</a></li>
                         <li><a href="/logout">{logout}</a></li>
                     </ul>
                 </nav>
-            </div>
+            </div> */}
             <div className="dashboard__content">
                 <div className="dashboard__content__header">
                     {currentPage}
