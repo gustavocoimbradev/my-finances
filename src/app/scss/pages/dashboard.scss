@@ -82,6 +82,16 @@
                     font-size: 18px;
                     flex: 1;
                 }
+                >a {
+                    >img {
+                        width: 22px;
+                    }
+                    >span {
+                        color: black;
+                        font-size: 18px;
+                        flex: 1;
+                    }
+                }
             }
         }
         &__main {
