@@ -74,7 +74,8 @@ export default function Page(){
             '12': 'December'
         };
         let dateFormatted;
-        dateFormatted = `${months[(date).slice(5,7)]} ${(date).slice(8,10)}, ${(date).slice(0,4)}`;
+        //dateFormatted = `${months[(date).slice(5,7)]} ${(date).slice(8,10)}, ${(date).slice(0,4)}`;
+        dateFormatted = `Day ${(date).slice(8,10)}`;
         return dateFormatted;
     }
     const formatPeriod = (date:string) => {
@@ -198,8 +199,9 @@ export default function Page(){
     const handleDescription = (value:string) => {
         return setDescription(value);
     }
-    const handleValue = (value:string) => {
-        return setValue(value);
+    const handleValue = (value: string) => {
+        const filteredValue = value.replace(/[^0-9.,]/g, '');
+        return setValue(filteredValue);
     }
     const handleType = (value:string) => {
         return setType(value);
@@ -248,22 +250,21 @@ export default function Page(){
                         <div className="popup__box__content">
                             <form>
                                 <label htmlFor="description">
-                                    <input placeholder="Description" name="text" id="text" value={description} onChange={(e) => handleDescription(e.target.value)}/>
+                                    <input required placeholder="Description" name="text" id="text" value={description} onChange={(e) => handleDescription(e.target.value)}/>
                                 </label>
                                 <label htmlFor="value">
-                                    <input placeholder="Value" type="number" name="value" id="value" value={value} onChange={(e) => handleValue(e.target.value)}/>
+                                    <input inputMode="decimal" required placeholder="Value" type="text" name="value" id="value" value={value} onChange={(e) => handleValue(e.target.value)}/>
                                 </label>
                                 <label htmlFor="type">
-                                    <select name="type" id="type" value={type} onChange={(e) => handleType(e.target.value)}>
+                                    <select required name="type" id="type" value={type} onChange={(e) => handleType(e.target.value)}>
                                         <option value="1">Income</option>
                                         <option value="2">Expense</option>
                                     </select>
                                 </label>
                                 <label htmlFor="recurring">
-                                    <select name="recurring" id="recurring" value={recurring} onChange={(e) => handleRecurring(e.target.value)}>
+                                    <select required name="recurring" id="recurring" value={recurring} onChange={(e) => handleRecurring(e.target.value)}>
                                         <option value="1">Just once</option>
                                         <option value="2">Every month</option>
-                                        <option value="3">Every year</option>
                                     </select>
                                 </label>
                                 <label htmlFor="date">
@@ -292,7 +293,7 @@ export default function Page(){
                         {rows && rows.map((row:any) => (
                             <tr key={row.id} id={`transaction-${row.id}`}>
                                 <td>{row.description ?? 'No description provided'}</td>
-                                <td>{row.recurring == 1 ? 'Just once' : (row.recurring == 2 ? 'Every month' : (row.recurring == 3 ? 'Every year' : '-'))}</td>
+                                <td>{row.recurring == 1 ? 'Just once' : 'Every month'}</td>
                                 <td>{formatDate(row.date)}</td>
                                 <td className={row.type == 1 ? 'text text--bold text--success' : 'text text--bold text--danger'}>
                                     {row.type == 1 ? '(+)' : '(-)'} {parseFloat(row.value).toFixed(2)} 

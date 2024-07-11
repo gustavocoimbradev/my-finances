@@ -46,8 +46,8 @@ export default function Layout({
                 <nav>
                     <ul>
                         <li><a href="/dashboard/transactions">{transactions}</a></li>
-                        <li><a href="/dashboard/emergency">{emergency}</a></li>
-                        <li><a href="/dashboard/investments">{investments}</a></li>
+                        {/* <li><a href="/dashboard/emergency">{emergency}</a></li> */}
+                        {/* <li><a href="/dashboard/investments">{investments}</a></li> */}
                         <li><a href="/logout">{logout}</a></li>
                     </ul>
                 </nav>
