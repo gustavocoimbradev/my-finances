@@ -13,8 +13,8 @@ export async function GET(request: Request) {
     const value = urlParams.get('value');    
     const date = urlParams.get('date');    
     const type = urlParams.get('type');    
-    const recurring = urlParams.get('recurring');    
-    const paid = urlParams.get('paid');    
+    const recurring = urlParams.get('recurring') == "1" ? true : false;    
+    const paid =  urlParams.get('paid') == "1" ? true : false;    
 
     const data = await sql`
         SELECT id FROM users

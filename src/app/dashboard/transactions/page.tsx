@@ -369,6 +369,12 @@ export default function Page(){
                                 <label htmlFor="date">
                                     <input type="date" name="date" id="date" value={date} onChange={(e) => handleDate(e.target.value)}/>
                                 </label>
+                                <label htmlFor="paid">
+                                    <select required name="paid" id="paid" value={paid} onChange={(e) => handlePaid(e.target.value)}>
+                                        <option value="0">Pending</option>
+                                        <option value="1">Paid/received</option>
+                                    </select>
+                                </label>
                             </form>
                         </div>
                         <div className="popup__box__footer">
@@ -437,7 +443,7 @@ export default function Page(){
                                                 </label>
                                                 <label htmlFor="paid">
                                                     <select required name="paid" id="paid" value={paid} onChange={(e) => handlePaid(e.target.value)}>
-                                                        <option value="0">Not paid/received yet</option>
+                                                        <option value="0">Pending</option>
                                                         <option value="1">Paid/received</option>
                                                     </select>
                                                 </label>

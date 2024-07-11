@@ -25,10 +25,11 @@ export async function GET(request: Request) {
         FROM transactions
         INNER JOIN users ON users.id = transactions.user_id
         WHERE md5(users.email||users.password) = ${token} 
-        AND transactions.recurring = 1 AND from_transaction = 0 AND transactions.date <= ${endDate}
+        AND transactions.recurring = TRUE AND from_transaction = 0 AND transactions.date <= ${endDate}
     `;
 
     if(checkRecurring.rows.length) {
+
 
         const currentPeriod = await sql`
             SELECT 
@@ -36,7 +37,7 @@ export async function GET(request: Request) {
             FROM transactions
             INNER JOIN users ON users.id = transactions.user_id
             WHERE md5(users.email||users.password) = ${token} 
-            AND transactions.recurring = 1
+            AND transactions.recurring = true
             AND (transactions.from_transaction = ${checkRecurring.rows[0].id} OR transactions.id = ${checkRecurring.rows[0].id})
             AND transactions.date >= ${startDate} AND transactions.date <= ${endDate} 
         `;

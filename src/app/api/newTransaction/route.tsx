@@ -12,8 +12,9 @@ export async function GET(request: Request) {
     const value = urlParams.get('value');    
     const date = urlParams.get('date');    
     const type = urlParams.get('type');    
-    const recurring = urlParams.get('recurring');    
-
+    const recurring = urlParams.get('recurring') == "1" ? true : false;    
+    const paid = urlParams.get('paid') == "1" ? true : false;  
+    
     const data = await sql`
         SELECT id FROM users
         WHERE md5(users.email||users.password) = ${token} 
@@ -22,7 +23,7 @@ export async function GET(request: Request) {
     let response;
 
     if (data.rows.length && description && value && date && type) {
-        const insert = await sql`INSERT INTO transactions (user_id, description, value, date, type, recurring) VALUES (${data.rows[0].id}, ${description},${value},${date},${type},${recurring})`;
+        const insert = await sql`INSERT INTO transactions (user_id, description, value, date, type, recurring, paid, from_transaction) VALUES (${data.rows[0].id}, ${description},${value},${date},${type},${recurring},${paid},0)`;
         if (insert) {
             response = {
                 code: 1,
