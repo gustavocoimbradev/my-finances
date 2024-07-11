@@ -24,6 +24,16 @@
                         padding-right: 32px;
                     }
                     width: calc(70%/5);
+
+                    @include mobile {
+                        width: calc(70%/3);
+                        &:nth-child(2) {
+                            display: none;
+                        }
+                        &:nth-child(5) {
+                            display: none;
+                        }
+                    }
                 }
             }
         }
