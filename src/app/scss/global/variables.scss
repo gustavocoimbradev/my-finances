@@ -3,3 +3,9 @@ $secondaryColor: #fbd449;
 
 $danger: rgb(228, 57, 57);
 $success:rgb(42, 136, 58);
+
+$black: #363636;
+$grey-100: lighten($black,75%);
+$grey-200: lighten($black,70%);
+$grey-300: lighten($black,65%);
+$grey-400: lighten($black,60%);

@@ -242,7 +242,7 @@ export default function Page(){
         }
     }
     const deleteTransaction = async (id:number, e:any, which:string, from_transaction:number) => {
-        const response = await fetch(`/api/deleteTransaction?id=${id}&which=${which}&token=${Cookies.get('userLogged')}`);
+        const response = await fetch(`/api/deleteTransaction?id=${id}&which=${which}&from_transaction=${fromTransaction}&date=${date}&token=${Cookies.get('userLogged')}`);
         const data = await response.json();
         if (data.code == 1) {
             closeAllPopups();
@@ -407,7 +407,7 @@ export default function Page(){
                         {rows && rows.map((row:any) => (
                             <tr key={row.id} id={`transaction-${row.id}`} attr-val={row.id} attr-type={row.type}>
                                 <td id={`transaction-description-${row.id}`} attr-val={row.description}>{row.description}</td>
-                                <td id={`transaction-recurring-${row.id}`} attr-val={row.recurring}>{row.recurring == 0 ? 'Just once' : 'Every month'}</td>
+                                <td id={`transaction-recurring-${row.id}`} attr-val={row.recurring}>{row.recurring == 0 ? '-' : 'Every month'}</td>
                                 <td id={`transaction-date-${row.id}`} attr-val={row.date}>{formatDate(row.date)}</td>
                                 <td id={`transaction-value-${row.id}`} attr-val={row.value} className={row.type == 1 ? 'text text--bold text--success' : 'text text--bold text--danger'}>
                                     {row.type == 1 ? '(+)' : '(-)'} {parseFloat(row.value).toFixed(2)} 
@@ -473,6 +473,11 @@ export default function Page(){
                                 </div>
                             </tr>
                         ))}
+                        {rows?'':
+                            <tr>
+                                <td colSpan={6} className="message">No transactions found</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

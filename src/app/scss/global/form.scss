@@ -29,7 +29,7 @@ form {
             color: #292929;
         }
         >input, textarea, select {
-            border: solid 1px #dadada;
+            border: solid 1px $grey-200;
             padding: 10px 16px;
             width: 100%;
             outline: none;
@@ -38,6 +38,10 @@ form {
             display: block;
             resize: none;
             background: transparent;
+            transition: all .2s ease-in-out;
+            &:focus, &:active {
+                border-color: $grey-400;
+            }
             &::placeholder {
                 color: #292929;
             }

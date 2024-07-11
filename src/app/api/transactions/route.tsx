@@ -74,7 +74,7 @@ export async function GET(request: Request) {
             INNER JOIN users ON users.id = transactions.user_id
             WHERE md5(users.email||users.password) = ${token} 
             AND transactions.date >= ${startDate} AND transactions.date <= ${endDate}
-            AND (transactions.recurring = TRUE and transactions.id <> transactions.from_transaction)
+            AND ((transactions.id <> transactions.from_transaction))
         `;
 
         let response;
