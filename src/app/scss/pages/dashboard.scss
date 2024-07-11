@@ -67,16 +67,21 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 14px;
-            transition: all .3s ease-in-out;
-            margin: 0 0 30px;
-            >img {
-                width: 22px;
-            }
-            >span {
-                color: black;
-                font-size: 18px;
-                flex: 1;
+            >div {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 14px;
+                transition: all .3s ease-in-out;
+                margin: 0 0 30px;
+                >img {
+                    width: 22px;
+                }
+                >span {
+                    color: black;
+                    font-size: 18px;
+                    flex: 1;
+                }
             }
         }
         &__main {
