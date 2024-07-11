@@ -46,13 +46,13 @@ export default function Page(){
           <span className={code == 2 ? 'error visible' : 'error hidden'}>User already exists.</span>
           <span className={code == 3 ? 'error visible' : 'error hidden'}>failed to create user.</span>
           <label htmlFor="name">
-            <input placeholder="Name" type="text" name="name" id="name" value={name} onChange={(e) => setName(e.target.value)}/>
+            <input autoComplete="off" autoCorrect="off" placeholder="Name" type="text" name="name" id="name" value={name} onChange={(e) => setName(e.target.value)}/>
           </label>
           <label htmlFor="email">
-            <input placeholder="E-mail" type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+            <input autoComplete="off" autoCorrect="off" placeholder="E-mail" type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
           </label>
           <label htmlFor="password">
-            <input placeholder="Password" type="password" name="password" id="password" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)}/>
+            <input autoComplete="off" autoCorrect="off" placeholder="Password" type="password" name="password" id="password" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)}/>
           </label>
           <button type="submit" className={isLoading ? 'bgSecondaryColor disabled' : 'bgSecondaryColor'}>Register</button>
           <a href="./login">Already have an account? Login</a>
