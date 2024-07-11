@@ -465,9 +465,9 @@ export default function Page(){
                                         <div className="popup__box__footer">
                                             <button className="text text--dark" onClick={() => openPopup(`#popup-${row.id}`)}>Cancel</button>
                                             {row.recurring || row.from_transaction > 0 ? (
-                                                <button className="text text--danger" onClick={(e) => handleDeleteTransaction(row.id, e, 'all', row.from_transaction)}>Delete all</button>
+                                                <button className="text text--danger" onClick={(e) => handleDeleteTransaction(row.id, e, 'all', row.from_transaction)}>Delete this and the next ones</button>
                                             ) : null }
-                                            <button className="text text--danger" onClick={(e) => handleDeleteTransaction(row.id, e, 'this', 0)}>Delete</button>
+                                            <button className="text text--danger" onClick={(e) => handleDeleteTransaction(row.id, e, 'this', 0)}>Delete only this one</button>
                                         </div>
                                     </div>
                                 </div>
