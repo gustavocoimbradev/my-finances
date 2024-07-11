@@ -130,6 +130,14 @@ export default function Page(){
 
             setId(id);
 
+            const type = document.querySelector(`#transaction-${id}`);
+            if(type) {
+                const typeVal = type.getAttribute('attr-type');
+                if (typeVal) {
+                    handleType(typeVal);
+                }
+            }
+
             const description = document.querySelector(`#transaction-description-${id}`);
             if(description) {
                 const descriptionVal = description.getAttribute('attr-val');
@@ -383,14 +391,14 @@ export default function Page(){
                     </thead>
                     <tbody>
                         {rows && rows.map((row:any) => (
-                            <tr key={row.id} id={`transaction-${row.id}`} attr-val={row.id}>
+                            <tr key={row.id} id={`transaction-${row.id}`} attr-val={row.id} attr-type={row.type}>
                                 <td id={`transaction-description-${row.id}`} attr-val={row.description}>{row.description}</td>
                                 <td id={`transaction-recurring-${row.id}`} attr-val={row.recurring}>{row.recurring == 0 ? 'Just once' : 'Every month'}</td>
                                 <td id={`transaction-date-${row.id}`} attr-val={row.date}>{formatDate(row.date)}</td>
                                 <td id={`transaction-value-${row.id}`} attr-val={row.value} className={row.type == 1 ? 'text text--bold text--success' : 'text text--bold text--danger'}>
                                     {row.type == 1 ? '(+)' : '(-)'} {parseFloat(row.value).toFixed(2)} 
                                 </td>
-                                <td id={`transaction-paid-${row.id}`} attr-val={row.paid}>{row.paid == 1 ? 'Yes' : '-'}</td>
+                                <td id={`transaction-paid-${row.id}`} attr-val={row.paid == 1 ? '1' : '0'}>{row.paid == 1 ? 'Yes' : '-'}</td>
                                 <td>
                                     <button onClick={() => openPopup(`#popup-${row.id}`, true)}>
                                         <img src="/icons/edit.svg"/>
@@ -466,9 +474,9 @@ export default function Page(){
                 </table>
             </div>
             <div className="balance">
-                <h4>Balance for the period (pending)</h4>
+                <h4>Balance (pending)</h4>
                 <h2>{balanceNotPaid.toFixed(2)}</h2>
-                <h4>Balance for the period (paid/received)</h4>
+                <h4>Balance (paid/received)</h4>
                 <h1 className={`text ${balancePaid>=0?'text--success':'text--danger'}`}>{balancePaid.toFixed(2)}</h1>
             </div>
         </>
