@@ -179,7 +179,6 @@ export default function Page(){
         if (data.code == 1) {
             closeAllPopups();
             fetchTransactions(currentDate);
-            resetAllForms();
         } else {
             e.target.classList.remove('disabled');
         }
@@ -190,7 +189,6 @@ export default function Page(){
         if (data.code == 1) {
             closeAllPopups();
             fetchTransactions(currentDate);
-            resetAllForms();
         } else {
             e.target.classList.remove('disabled');
         }
@@ -275,6 +273,10 @@ export default function Page(){
             setCurrentDate(nextPeriod());
         }
     }
+    const handleNewTransaction = (ref:string) => {
+        resetAllForms();
+        openPopup(`#popup-new-transaction`);
+    }
 
     return (
         <>
@@ -290,7 +292,7 @@ export default function Page(){
                     </button>
                 </div>
                 <div className="options__buttons">
-                    <button onClick={() => openPopup(`#popup-new-transaction`)}>
+                    <button onClick={() => handleNewTransaction(`#popup-new-transaction`)}>
                         <img src="/icons/plus.svg"/> <span className="text text--bold">New transaction</span>
                     </button>
                 </div>
