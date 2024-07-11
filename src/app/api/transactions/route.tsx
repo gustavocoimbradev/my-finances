@@ -29,7 +29,7 @@ export async function GET(request: Request) {
             AND transactions.recurring = TRUE AND from_transaction = 0 AND transactions.date <= ${endDate}
         `;
 
-        checkRecurring.rows.forEach(async (row) => {
+        await Promise.all(checkRecurring.rows.map(async (row) => {
             
             // Verificar se a transação foi clonada
             const currentPeriod = await sql`
@@ -59,12 +59,13 @@ export async function GET(request: Request) {
                     const year = parseInt(yearStr, 10); 
                     const month = parseInt(monthStr, 10); 
                     const newDate = `${year}-${month}-${row.date.toISOString().slice(8,10)}`;
-                    sql`INSERT INTO transactions (user_id, description, value, date, type, recurring, from_transaction) VALUES (${row.user_id}, ${row.description},${row.value},${newDate},${row.type},${row.recurring},${row.id})`;
+                    await sql `INSERT INTO transactions (user_id, description, value, date, type, recurring, from_transaction) VALUES (${row.user_id}, ${row.description},${row.value},${newDate},${row.type},${row.recurring},${row.id})`;
                 }
+
             }
      
-        })
-
+        }));
+        
         const data = await sql`
             SELECT 
                 transactions.id,
@@ -95,6 +96,7 @@ export async function GET(request: Request) {
                 count: 0,
                 message: `No transactions found`,
             }
+
         }
 
         return NextResponse.json(response, { status: 200 });
