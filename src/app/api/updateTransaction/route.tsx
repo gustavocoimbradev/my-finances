@@ -14,6 +14,7 @@ export async function GET(request: Request) {
     const date = urlParams.get('date');    
     const type = urlParams.get('type');    
     const recurring = urlParams.get('recurring');    
+    const paid = urlParams.get('paid');    
 
     const data = await sql`
         SELECT id FROM users
@@ -23,7 +24,7 @@ export async function GET(request: Request) {
     let response;
 
     if (data.rows.length && description && value && date && type) {
-        const update = await sql`UPDATE transactions SET description = ${description}, value = ${value}, date = ${date}, type = ${type}, recurring = ${recurring} WHERE user_id= ${data.rows[0].id} AND id = ${id}`;
+        const update = await sql`UPDATE transactions SET description = ${description}, value = ${value}, date = ${date}, type = ${type}, recurring = ${recurring}, paid = ${paid} WHERE user_id= ${data.rows[0].id} AND id = ${id}`;
         if (update) {
             response = {
                 code: 1,

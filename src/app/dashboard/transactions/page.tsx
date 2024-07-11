@@ -11,13 +11,15 @@ export default function Page(){
 
     // States
     const [rows, setRows] = useState([] as any);
-    const [balance, setBalance] = useState(0 as number);
+    const [balancePaid, setBalancePaid] = useState(0 as number);
+    const [balanceNotPaid, setBalanceNotPaid] = useState(0 as number);
     const [id, setId] = useState('' as string);
     const [value, setValue] = useState('' as string);
     const [description, setDescription] = useState('' as string);
     const [date, setDate] = useState('' as string);
     const [type, setType] = useState('1' as string);
-    const [recurring, setRecurring] = useState('1' as string);
+    const [recurring, setRecurring] = useState('0' as string);
+    const [paid, setPaid] = useState('0' as string);
     const [currentDate, setCurrentDate] = useState('' as string);
 
     // Requests
@@ -25,18 +27,34 @@ export default function Page(){
         const response = await fetch(`/api/transactions?date=${period}&token=${Cookies.get('userLogged')}`);
         const data = await response.json();
         setRows(data.transactions);
-        const calculateBalance = (rows:any) => {
+        const calculateBalancePaid = (rows:any) => {
             let total = 0;
             rows && rows.forEach((row:any) => {
-                if (row.type === 1) {
-                    total += parseFloat(row.value);
-                } else {
-                    total -= parseFloat(row.value);
+                if (row.paid) {
+                    if (row.type === 1) {
+                        total += parseFloat(row.value);
+                    } else {
+                        total -= parseFloat(row.value);
+                    }
                 }
             });
             return total;
         };
-        setBalance(calculateBalance(data.transactions));
+        setBalancePaid(calculateBalancePaid(data.transactions));
+        const calculateBalanceNotPaid = (rows:any) => {
+            let total = 0;
+            rows && rows.forEach((row:any) => {
+                if (!row.paid) {
+                    if (row.type === 1) {
+                        total += parseFloat(row.value);
+                    } else {
+                        total -= parseFloat(row.value);
+                    }
+                }
+            });
+            return total;
+        };
+        setBalanceNotPaid(calculateBalanceNotPaid(data.transactions));
     }
     useEffect(() => {
         setDate(getCurrentDate());
@@ -144,6 +162,19 @@ export default function Page(){
                 }
             }
 
+            const paid = document.querySelector(`#transaction-paid-${id}`);
+            if(paid) {
+                const paidVal = paid.getAttribute('attr-val');
+                if (paidVal) {
+                    handlePaid(paidVal);
+                }
+            }
+
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.classList.remove('disabled');
+            })
+
         }
 
     }   
@@ -164,7 +195,8 @@ export default function Page(){
         setDescription('');
         setDate('');
         setType('1');
-        setRecurring('1');
+        setRecurring('0');
+        setPaid('0');
         setDate(getCurrentDate());
         const buttons = document.querySelectorAll('button');
         buttons.forEach(button => {
@@ -174,7 +206,7 @@ export default function Page(){
         })
     }
     const saveTransaction = async (e:any) => {
-        const response = await fetch(`/api/newTransaction?value=${value}&description=${description}&date=${date}&type=${type}&recurring=${recurring}&token=${Cookies.get('userLogged')}`);
+        const response = await fetch(`/api/newTransaction?paid=${paid}&value=${value}&description=${description}&date=${date}&type=${type}&recurring=${recurring}&token=${Cookies.get('userLogged')}`);
         const data = await response.json();
         if (data.code == 1) {
             closeAllPopups();
@@ -184,7 +216,7 @@ export default function Page(){
         }
     }
     const updateTransaction = async (e:any) => {
-        const response = await fetch(`/api/updateTransaction?id=${id}&value=${value}&description=${description}&date=${date}&type=${type}&recurring=${recurring}&token=${Cookies.get('userLogged')}`);
+        const response = await fetch(`/api/updateTransaction?paid=${paid}&id=${id}&value=${value}&description=${description}&date=${date}&type=${type}&recurring=${recurring}&token=${Cookies.get('userLogged')}`);
         const data = await response.json();
         if (data.code == 1) {
             closeAllPopups();
@@ -264,6 +296,9 @@ export default function Page(){
     const handleRecurring = (value:string) => {
         return setRecurring(value);
     }
+    const handlePaid = (value:string) => {
+        return setPaid(value);
+    }
     const handleDateChanging = (direction:string) => {
         if (direction == 'prev') {
             fetchTransactions(prevPeriod());
@@ -319,8 +354,8 @@ export default function Page(){
                                 </label>
                                 <label htmlFor="recurring">
                                     <select required name="recurring" id="recurring" value={recurring} onChange={(e) => handleRecurring(e.target.value)}>
-                                        <option value="1">Just once</option>
-                                        <option value="2">Every month</option>
+                                        <option value="0">Just once</option>
+                                        <option value="1">Every month</option>
                                     </select>
                                 </label>
                                 <label htmlFor="date">
@@ -342,6 +377,7 @@ export default function Page(){
                             <th>Recurring</th>
                             <th>Date</th>
                             <th>Value</th>
+                            <th>Paid/received</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -349,11 +385,12 @@ export default function Page(){
                         {rows && rows.map((row:any) => (
                             <tr key={row.id} id={`transaction-${row.id}`} attr-val={row.id}>
                                 <td id={`transaction-description-${row.id}`} attr-val={row.description}>{row.description}</td>
-                                <td id={`transaction-recurring-${row.id}`} attr-val={row.recurring}>{row.recurring == 1 ? 'Just once' : 'Every month'}</td>
+                                <td id={`transaction-recurring-${row.id}`} attr-val={row.recurring}>{row.recurring == 0 ? 'Just once' : 'Every month'}</td>
                                 <td id={`transaction-date-${row.id}`} attr-val={row.date}>{formatDate(row.date)}</td>
                                 <td id={`transaction-value-${row.id}`} attr-val={row.value} className={row.type == 1 ? 'text text--bold text--success' : 'text text--bold text--danger'}>
                                     {row.type == 1 ? '(+)' : '(-)'} {parseFloat(row.value).toFixed(2)} 
                                 </td>
+                                <td id={`transaction-paid-${row.id}`} attr-val={row.paid}>{row.paid == 1 ? 'Yes' : '-'}</td>
                                 <td>
                                     <button onClick={() => openPopup(`#popup-${row.id}`, true)}>
                                         <img src="/icons/edit.svg"/>
@@ -383,12 +420,18 @@ export default function Page(){
                                                 </label>
                                                 <label htmlFor="recurring">
                                                     <select required name="recurring" id="recurring" value={recurring} onChange={(e) => handleRecurring(e.target.value)}>
-                                                        <option value="1">Just once</option>
-                                                        <option value="2">Every month</option>
+                                                        <option value="0">Just once</option>
+                                                        <option value="1">Every month</option>
                                                     </select>
                                                 </label>
                                                 <label htmlFor="date">
                                                     <input type="date" name="date" id="date" value={date} onChange={(e) => handleDate(e.target.value)}/>
+                                                </label>
+                                                <label htmlFor="paid">
+                                                    <select required name="paid" id="paid" value={paid} onChange={(e) => handlePaid(e.target.value)}>
+                                                        <option value="0">Not paid/received yet</option>
+                                                        <option value="1">Paid/received</option>
+                                                    </select>
                                                 </label>
                                             </form>
                                         </div>
@@ -420,8 +463,10 @@ export default function Page(){
                 </table>
             </div>
             <div className="balance">
-                <h4>Balance for the period</h4>
-                <h1 className={`text ${balance>=0?'text--success':'text--danger'}`}>{balance.toFixed(2)}</h1>
+                <h4>Balance for the period (pending)</h4>
+                <h2>{balanceNotPaid.toFixed(2)}</h2>
+                <h4>Balance for the period (paid/received)</h4>
+                <h1 className={`text ${balancePaid>=0?'text--success':'text--danger'}`}>{balancePaid.toFixed(2)}</h1>
             </div>
         </>
     );

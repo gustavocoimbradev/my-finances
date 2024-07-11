@@ -18,14 +18,12 @@
                     &:first-of-type {
                         text-align: left;
                         padding-left: 32px;
+                        width: 30%;
                     }
                     &:last-of-type {
                         padding-right: 32px;
                     }
-                    
-
-                    width: calc(100%/5);
-
+                    width: calc(70%/5);
                 }
             }
         }
