@@ -20,7 +20,7 @@
         top: 0;
         left: 0;
         @include desktop {
-            width: 300px;
+            width: 200px;
         }
         &__brand {
             padding: 10px 20px;
@@ -60,7 +60,7 @@
         background: #f0f0f0;
         flex: 1;
         @include desktop {
-            padding: 30px 30px 30px 340px;
+            padding: 30px 30px 30px 240px;
         }
         &__header {
             display: flex;
