@@ -225,8 +225,8 @@ export default function Page(){
             e.target.classList.remove('disabled');
         }
     }
-    const deleteTransaction = async (id:number, e:any) => {
-        const response = await fetch(`/api/deleteTransaction?id=${id}&token=${Cookies.get('userLogged')}`);
+    const deleteTransaction = async (id:number, e:any, which:string, from_transaction:number) => {
+        const response = await fetch(`/api/deleteTransaction?id=${id}&which=${which}&token=${Cookies.get('userLogged')}`);
         const data = await response.json();
         if (data.code == 1) {
             closeAllPopups();
@@ -276,9 +276,9 @@ export default function Page(){
         e.target.classList.add('disabled');
         return updateTransaction(e);
     }
-    const handleDeleteTransaction = (id:number, e:any) => {
+    const handleDeleteTransaction = (id:number, e:any, which:string, from_transaction:number) => {
         e.target.classList.add('disabled');
-        return deleteTransaction(id, e);
+        return deleteTransaction(id, e, which, from_transaction);
     }
     const handleDescription = (value:string) => {
         return setDescription(value);
@@ -453,7 +453,10 @@ export default function Page(){
                                         </div>
                                         <div className="popup__box__footer">
                                             <button className="text text--dark" onClick={() => openPopup(`#popup-${row.id}`)}>Cancel</button>
-                                            <button className="text text--danger" onClick={(e) => handleDeleteTransaction(row.id, e)}>Delete</button>
+                                            {row.recurring || row.from_transaction > 0 ? (
+                                                <button className="text text--danger" onClick={(e) => handleDeleteTransaction(row.id, e, 'all', row.from_transaction)}>Delete all</button>
+                                            ) : null }
+                                            <button className="text text--danger" onClick={(e) => handleDeleteTransaction(row.id, e, 'this', 0)}>Delete</button>
                                         </div>
                                     </div>
                                 </div>
