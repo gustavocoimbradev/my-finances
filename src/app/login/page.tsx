@@ -47,10 +47,10 @@ export default function Page(){
                     <h5>Already have an account? Login</h5>
                     <span className={code == 2 ? 'error visible' : 'error hidden'}>Invalid credentials.</span>
                     <label htmlFor="email">
-                        <input className={code == 2 ? 'is-invalid' : ''} placeholder="E-mail" type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <input autoComplete="off" autoCorrect="off" className={code == 2 ? 'is-invalid' : ''} placeholder="E-mail" type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     </label>
                     <label htmlFor="password">
-                        <input className={code == 2 ? 'is-invalid' : ''} placeholder="Password" type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                        <input autoComplete="off" autoCorrect="off" className={code == 2 ? 'is-invalid' : ''} placeholder="Password" type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     </label>
                     <button type="submit" className={isLoading ? 'bgPrimaryColor disabled' : 'bgPrimaryColor'}>Login</button>
                     <a href="./register">Don't have an account? Register</a>
