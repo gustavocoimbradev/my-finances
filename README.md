@@ -10,7 +10,7 @@
 </p>
 
 <p>
-   "My Finances" is a simple and modern web notepad. Its data is stored in the browser itself using LocalStorage, ensuring user privacy. 
+   "My Finances" is a platform for managing personal finances.
 </p>
 
 ![Screen Shot 2024-07-11 at 12 54 01](https://github.com/gustavocoimbradev/my-finances/assets/135629152/b990d577-d835-4fe7-93e6-098ff37ce1b2)
