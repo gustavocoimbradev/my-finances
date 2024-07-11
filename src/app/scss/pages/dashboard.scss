@@ -116,7 +116,9 @@
                 gap: 10px;  
                 user-select: none;
                 &__left {
-                    flex: 1;
+                    @include desktop {
+                        flex: 1;
+                    }
                 }
                 &__period {
                     display: flex;
