@@ -20,8 +20,8 @@ export default function Page(){
     const [currentDate, setCurrentDate] = useState('' as string);
 
     // Requests
-    const fetchTransactions = async () => {
-        const response = await fetch(`/api/transactions?date=${getCurrentDate()}&token=${Cookies.get('userLogged')}`);
+    const fetchTransactions = async (period:string) => {
+        const response = await fetch(`/api/transactions?date=${period}&token=${Cookies.get('userLogged')}`);
         const data = await response.json();
         setRows(data.transactions);
         const calculateBalance = (rows:any) => {
@@ -40,7 +40,7 @@ export default function Page(){
     useEffect(() => {
         setDate(getCurrentDate());
         setCurrentDate(getCurrentDate());
-        fetchTransactions();
+        fetchTransactions(getCurrentDate());
     }, []);
 
     // Utils
@@ -138,7 +138,7 @@ export default function Page(){
         const data = await response.json();
         if (data.code == 1) {
             closeAllPopups();
-            fetchTransactions();
+            fetchTransactions(currentDate);
             resetAllForms();
         } else {
             e.target.classList.remove('disabled');
@@ -157,12 +157,33 @@ export default function Page(){
                     transaction.classList.add('removed--2');
                     setTimeout(() => {
                         transaction.classList.add('removed--3');
+                        setTimeout(() => {
+                            fetchTransactions(currentDate);
+                        }, 300);
                     }, 300);
                 }, 1000);
             }
         } else {
             e.target.classList.remove('disabled');
         }
+    }
+    const prevPeriod = () => {
+        const date = new Date(currentDate);
+        date.setMonth(date.getMonth() - 1);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const result = `${year}-${month}-${day}`;
+        return result;
+    }
+    const nextPeriod = () => {
+        const date = new Date(currentDate);
+        date.setMonth(date.getMonth() + 1);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const result = `${year}-${month}-${day}`;
+        return result;
     }
 
     // Handlers
@@ -189,13 +210,28 @@ export default function Page(){
     const handleRecurring = (value:string) => {
         return setRecurring(value);
     }
+    const handleDateChanging = (direction:string) => {
+        if (direction == 'prev') {
+            fetchTransactions(prevPeriod());
+            setCurrentDate(prevPeriod());
+        } else {
+            fetchTransactions(nextPeriod());
+            setCurrentDate(nextPeriod());
+        }
+    }
 
     return (
         <>
             <div className="options">
                 <div className="options__left"></div>
                 <div className="options__period">
-                    <span>{formatPeriod(getCurrentDate())}</span>
+                    <button onClick={() => handleDateChanging('prev')}>
+                        <img src="/icons/angle-left.svg"/>
+                    </button>
+                    <span>{formatPeriod(currentDate?currentDate:getCurrentDate())}</span>
+                    <button onClick={() => handleDateChanging('next')}>
+                        <img src="/icons/angle-right.svg"/>
+                    </button>
                 </div>
                 <div className="options__buttons">
                     <button onClick={() => openPopup(`#popup-new-transaction`)}>

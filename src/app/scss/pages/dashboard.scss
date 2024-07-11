@@ -93,6 +93,7 @@
                 justify-content: space-evenly;
                 align-items: center;
                 gap: 10px;  
+                user-select: none;
                 &__left {
                     flex: 1;
                 }
@@ -104,6 +105,19 @@
                     flex: 1;
                     >span {
                         font-size: 18px;
+                    }
+                    >button {
+                        background: transparent;
+                        padding: 0;
+                        outline: none;
+                        border: none;
+                        display: flex;
+                        cursor: pointer;
+                        padding: 0 6px;
+                        margin: 0 6px;
+                        >img {
+                            width: 12px;
+                        }
                     }
                 }
                 &__buttons {
