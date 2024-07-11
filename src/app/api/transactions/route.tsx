@@ -70,11 +70,12 @@ export async function GET(request: Request) {
                 transactions.recurring,
                 transactions.paid,
                 transactions.from_transaction
-            FROM transactions
+            FROM transactions 
             INNER JOIN users ON users.id = transactions.user_id
             WHERE md5(users.email||users.password) = ${token} 
             AND transactions.date >= ${startDate} AND transactions.date <= ${endDate}
-            AND ((transactions.id <> transactions.from_transaction))
+            AND ((transactions.recurring = TRUE and transactions.id <> transactions.from_transaction) OR transactions.recurring = FALSE and transactions.id = transactions.from_transaction)
+            ORDER BY transactions.type, transactions.date  
         `;
 
         let response;
