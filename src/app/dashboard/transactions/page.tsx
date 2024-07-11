@@ -12,6 +12,7 @@ export default function Page(){
     // States
     const [rows, setRows] = useState([] as any);
     const [balance, setBalance] = useState(0 as number);
+    const [id, setId] = useState('' as string);
     const [value, setValue] = useState('' as string);
     const [description, setDescription] = useState('' as string);
     const [date, setDate] = useState('' as string);
@@ -97,7 +98,7 @@ export default function Page(){
         dateFormatted = `${months[(date).slice(5,7)]} ${(date).slice(0,4)}`;
         return dateFormatted;
     }
-    const openPopup = (ref:string) => {
+    const openPopup = (ref:string,transaction:boolean = false) => {
         const popups = document.querySelectorAll(`.popup`);
         popups.forEach((popup) => {
             popup.classList.remove(`active`);
@@ -105,6 +106,44 @@ export default function Page(){
         const popup = document.querySelector(`${ref}`);
         if (popup) {
             popup.classList.add(`active`);
+        }
+        if (transaction) {
+            const id = ref.replace('#popup-','');
+
+            setId(id);
+
+            const description = document.querySelector(`#transaction-description-${id}`);
+            if(description) {
+                const descriptionVal = description.getAttribute('attr-val');
+                if (descriptionVal) {
+                    handleDescription(descriptionVal);
+                }
+            }
+
+            const recurring = document.querySelector(`#transaction-recurring-${id}`);
+            if(recurring) {
+                const recurringVal = recurring.getAttribute('attr-val');
+                if (recurringVal) {
+                    handleRecurring(recurringVal);
+                }
+            }
+
+            const date = document.querySelector(`#transaction-date-${id}`);
+            if(date) {
+                const dateVal = date.getAttribute('attr-val');
+                if (dateVal) {
+                    handleDate(dateVal.slice(0, 10));
+                }
+            }
+
+            const value = document.querySelector(`#transaction-value-${id}`);
+            if(value) {
+                const valueVal = value.getAttribute('attr-val');
+                if (valueVal) {
+                    handleValue(valueVal);
+                }
+            }
+
         }
 
     }   
@@ -136,6 +175,17 @@ export default function Page(){
     }
     const saveTransaction = async (e:any) => {
         const response = await fetch(`/api/newTransaction?value=${value}&description=${description}&date=${date}&type=${type}&recurring=${recurring}&token=${Cookies.get('userLogged')}`);
+        const data = await response.json();
+        if (data.code == 1) {
+            closeAllPopups();
+            fetchTransactions(currentDate);
+            resetAllForms();
+        } else {
+            e.target.classList.remove('disabled');
+        }
+    }
+    const updateTransaction = async (e:any) => {
+        const response = await fetch(`/api/updateTransaction?id=${id}&value=${value}&description=${description}&date=${date}&type=${type}&recurring=${recurring}&token=${Cookies.get('userLogged')}`);
         const data = await response.json();
         if (data.code == 1) {
             closeAllPopups();
@@ -191,6 +241,10 @@ export default function Page(){
     const handleSaveTransaction = (e:any) => {
         e.target.classList.add('disabled');
         return saveTransaction(e);
+    }
+    const handleUpdateTransaction = (e:any) => {
+        e.target.classList.add('disabled');
+        return updateTransaction(e);
     }
     const handleDeleteTransaction = (id:number, e:any) => {
         e.target.classList.add('disabled');
@@ -291,15 +345,15 @@ export default function Page(){
                     </thead>
                     <tbody>
                         {rows && rows.map((row:any) => (
-                            <tr key={row.id} id={`transaction-${row.id}`}>
-                                <td>{row.description ?? 'No description provided'}</td>
-                                <td>{row.recurring == 1 ? 'Just once' : 'Every month'}</td>
-                                <td>{formatDate(row.date)}</td>
-                                <td className={row.type == 1 ? 'text text--bold text--success' : 'text text--bold text--danger'}>
+                            <tr key={row.id} id={`transaction-${row.id}`} attr-val={row.id}>
+                                <td id={`transaction-description-${row.id}`} attr-val={row.description}>{row.description}</td>
+                                <td id={`transaction-recurring-${row.id}`} attr-val={row.recurring}>{row.recurring == 1 ? 'Just once' : 'Every month'}</td>
+                                <td id={`transaction-date-${row.id}`} attr-val={row.date}>{formatDate(row.date)}</td>
+                                <td id={`transaction-value-${row.id}`} attr-val={row.value} className={row.type == 1 ? 'text text--bold text--success' : 'text text--bold text--danger'}>
                                     {row.type == 1 ? '(+)' : '(-)'} {parseFloat(row.value).toFixed(2)} 
                                 </td>
                                 <td>
-                                    <button onClick={() => openPopup(`#popup-${row.id}`)}>
+                                    <button onClick={() => openPopup(`#popup-${row.id}`, true)}>
                                         <img src="/icons/edit.svg"/>
                                     </button>
                                 </td>
@@ -311,11 +365,34 @@ export default function Page(){
                                             <button onClick={() => closePopup(`#popup-${row.id}`)}><img src="/icons/close.svg"/></button>
                                         </div>
                                         <div className="popup__box__content">
-                                            Upcoming
+                                            <form>
+                                                <input required type="hidden" name="id" id="id" value={id}/>
+                                                <label htmlFor="description">
+                                                    <input required placeholder="Description" name="text" id="text" value={description} onChange={(e) => handleDescription(e.target.value)}/>
+                                                </label>
+                                                <label htmlFor="value">
+                                                    <input inputMode="decimal" required placeholder="Value" type="text" name="value" id="value" value={value} onChange={(e) => handleValue(e.target.value)}/>
+                                                </label>
+                                                <label htmlFor="type">
+                                                    <select required name="type" id="type" value={type} onChange={(e) => handleType(e.target.value)}>
+                                                        <option value="1">Income</option>
+                                                        <option value="2">Expense</option>
+                                                    </select>
+                                                </label>
+                                                <label htmlFor="recurring">
+                                                    <select required name="recurring" id="recurring" value={recurring} onChange={(e) => handleRecurring(e.target.value)}>
+                                                        <option value="1">Just once</option>
+                                                        <option value="2">Every month</option>
+                                                    </select>
+                                                </label>
+                                                <label htmlFor="date">
+                                                    <input type="date" name="date" id="date" value={date} onChange={(e) => handleDate(e.target.value)}/>
+                                                </label>
+                                            </form>
                                         </div>
                                         <div className="popup__box__footer">
                                             <button className="text text--danger" onClick={() => openPopup(`#popup-delete-${row.id}`)}>Delete transaction</button>
-                                            <button className="text text--dark">Confirm changes</button>
+                                            <button className="text text--dark" onClick={(e) => handleUpdateTransaction(e)}>Confirm changes</button>
                                         </div>
                                     </div>
                                 </div>
