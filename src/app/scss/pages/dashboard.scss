@@ -83,12 +83,16 @@
                     flex: 1;
                 }
                 >a {
+                    display: flex;
+                    align-items: center;
+                    gap: 7px;
+                    flex-direction: row-reverse;
                     >img {
-                        width: 22px;
+                        width: 12px;
                     }
                     >span {
                         color: black;
-                        font-size: 18px;
+                        font-size: 14px;
                         flex: 1;
                     }
                 }
