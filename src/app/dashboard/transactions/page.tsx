@@ -300,7 +300,7 @@ export default function Page(){
         return setDescription(value);
     }
     const handleValue = (value: string) => {
-        const filteredValue = value.replace(/[^0-9.,]/g, '');
+        const filteredValue = value.replace(/[^0-9.]/g, '');
         return setValue(filteredValue);
     }
     const handleType = (value:string) => {
