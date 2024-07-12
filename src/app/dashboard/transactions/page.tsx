@@ -5,7 +5,8 @@ import Cookies from 'js-cookie';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; 
 import '@/app/scss/pages/dashboard.scss';
-
+import 'jquery-mask-plugin';
+import $ from 'jquery';
 
 export default function Page(){
 
@@ -61,6 +62,9 @@ export default function Page(){
         setDate(getCurrentDate());
         setCurrentDate(getCurrentDate());
         fetchTransactions(getCurrentDate());
+        $(function(){
+            $('.js-mask-money').mask('000.000.000.000.000,00', {reverse: true});
+        })
     }, []);
 
     // Utils
@@ -151,7 +155,7 @@ export default function Page(){
                 const descriptionVal = description.getAttribute('attr-val');
                 if (descriptionVal) {
                     handleDescription(descriptionVal);
-                }
+                } 
             }
 
             const recurring = document.querySelector(`#transaction-recurring-${id}`);
@@ -300,8 +304,7 @@ export default function Page(){
         return setDescription(value);
     }
     const handleValue = (value: string) => {
-        const filteredValue = value.replace(/[^0-9.,]/g, '');
-        return setValue(filteredValue);
+        return setValue(value);
     }
     const handleType = (value:string) => {
         return setType(value);
@@ -360,7 +363,7 @@ export default function Page(){
                                     <input required placeholder="Description" name="text" id="text" value={description} onChange={(e) => handleDescription(e.target.value)}/>
                                 </label>
                                 <label htmlFor="value">
-                                    <input inputMode="decimal" required placeholder="Value" type="text" name="value" id="value" value={value} onChange={(e) => handleValue(e.target.value)}/>
+                                    <input className="js-mask-money" inputMode="decimal" required placeholder="Value" type="text" name="value" id="value" value={value} onChange={(e) => handleValue(e.target.value)}/>
                                 </label>
                                 <label htmlFor="type">
                                     <select required name="type" id="type" value={type} onChange={(e) => handleType(e.target.value)}>
