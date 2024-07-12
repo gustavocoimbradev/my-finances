@@ -3,6 +3,64 @@ import Cookies from 'js-cookie';
  
 import { NextResponse } from "next/server";
 
+/**
+ * @swagger
+ * /api/newTransaction:
+ *   get:
+ *     tags:
+ *      - Transactions
+ *     description: Create a transaction
+ *     parameters:
+ *       - in: query
+ *         name: token
+ *         required: true
+ *         description: User's token
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: description
+ *         required: true
+ *         description: Transaction description
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: value
+ *         required: true
+ *         description: Transaction value
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: date
+ *         required: true
+ *         description: Transaction date (yyyy-mm-dd)
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: type
+ *         required: true
+ *         description: Transaction type (1 = Income / 2 = Expense)
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: recurring
+ *         required: true
+ *         description: Transaction recurring
+ *         schema:
+ *           type: boolean
+ *       - in: query
+ *         name: paid
+ *         required: true
+ *         description: Transaction paid
+ *         schema:
+ *           type: boolean
+ *     responses:
+ *       1:
+ *         description: Transaction created successfuly
+ *       2:
+ *         description: Failed to create transaction
+ *       3:
+ *         description: Failed to create transaction
+ */
 export async function GET(request: Request) {
 
     const urlParams = new URLSearchParams(request.url.split('?')[1]);
@@ -40,7 +98,7 @@ export async function GET(request: Request) {
     } else {
         response = {
             code: 2,
-            message: `Sorry. You can't do that`,
+            message: `Failed to create transaction`,
         }
     }
 

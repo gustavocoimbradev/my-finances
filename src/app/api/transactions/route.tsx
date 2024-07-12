@@ -3,6 +3,32 @@ import Cookies from 'js-cookie';
  
 import { NextResponse } from "next/server";
 
+/**
+ * @swagger
+ * /api/transactions:
+ *   get:
+ *     tags:
+ *      - Transactions
+ *     description: List of transactions of an user
+ *     parameters:
+ *       - in: query
+ *         name: token
+ *         required: true
+ *         description: User's token
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: date
+ *         required: true
+ *         description: Desired period (yyyy-mm)
+ *         schema:
+ *           type: string
+ *     responses:
+ *       1:
+ *         description: X transactions found
+ *       2:
+ *         description: No transactions found
+ */
 export async function GET(request: Request) {
 
     const urlParams = new URLSearchParams(request.url.split('?')[1]);

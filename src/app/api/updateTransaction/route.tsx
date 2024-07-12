@@ -3,6 +3,64 @@ import Cookies from 'js-cookie';
  
 import { NextResponse } from "next/server";
 
+/**
+ * @swagger
+ * /api/updateTransaction:
+ *   get:
+ *     tags:
+ *      - Transactions
+ *     description: Update a transaction
+ *     parameters:
+ *       - in: query
+ *         name: token
+ *         required: true
+ *         description: User's token
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         description: Transaction ID
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: description
+ *         required: true
+ *         description: Transaction description
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: value
+ *         required: true
+ *         description: Transaction value
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: date
+ *         required: true
+ *         description: Transaction date (yyyy-mm-dd)
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: paid
+ *         required: true
+ *         description: Transaction paid
+ *         schema:
+ *           type: boolean
+ *       - in: query
+ *         name: from_transaction
+ *         required: true
+ *         description: From transaction (original transaction ID, if recurring, or the same ID)
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       1:
+ *         description: Transaction updated successfuly
+ *       2:
+ *         description: Failed to update transaction
+ *       3:
+ *         description: Failed to update transaction
+ */
 export async function GET(request: Request) {
 
     const urlParams = new URLSearchParams(request.url.split('?')[1]);
@@ -73,7 +131,7 @@ export async function GET(request: Request) {
     } else {
         response = {
             code: 2,
-            message: `Sorry. You can't do that`,
+            message: `Failed to update transaction`,
         }
     }
 

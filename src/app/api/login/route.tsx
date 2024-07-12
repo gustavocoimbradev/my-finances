@@ -1,8 +1,33 @@
 import { sql } from '@vercel/postgres';
 
 import { NextResponse } from "next/server";
-import crypto from 'crypto';
 
+/**
+ * @swagger
+ * /api/login:
+ *   get:
+ *     tags:
+ *      - Accounts
+ *     description: Authenticate an user
+ *     parameters:
+ *       - in: query
+ *         name: email
+ *         required: true
+ *         description: User's email
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: password
+ *         required: true
+ *         description: User's password
+ *         schema:
+ *           type: string
+ *     responses:
+ *       1:
+ *         description: User authenticated
+ *       2:
+ *         description: Invalid credentials
+ */
 export async function GET(request: Request) {
 
     const urlParams = new URLSearchParams(request.url.split('?')[1]);
@@ -16,13 +41,13 @@ export async function GET(request: Request) {
     if (token = data.rows[0].token) {
         response = {
             code: 1,
-            message: 'User authenticated!',
+            message: 'User authenticated',
             token: token
         };
     } else {
         response = {
             code: 2,
-            message: 'Invalid credentials.'
+            message: 'Invalid credentials'
         }
     }
     return NextResponse.json(response, { status: 200 });

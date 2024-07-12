@@ -3,6 +3,52 @@ import Cookies from 'js-cookie';
     
 import { NextResponse } from "next/server";
 
+/**
+ * @swagger
+ * /api/deleteTransaction:
+ *   get:
+ *     tags:
+ *      - Transactions
+ *     description: Delete a transaction
+ *     parameters:
+ *       - in: query
+ *         name: token
+ *         required: true
+ *         description: User's token
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         description: Transaction ID
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: from_transaction
+ *         required: true
+ *         description: From transaction (original transaction ID, if recurring, or the same ID)
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: which
+ *         required: true
+ *         description: Which transaction (this = just this transaction / all = the next ones, if recurring)
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: date
+ *         required: true
+ *         description: Transaction period (yyyy-mm)
+ *         schema:
+ *           type: string
+ *     responses:
+ *       1:
+ *         description: Transaction deleted successfuly
+ *       2:
+ *         description: Failed to delete transaction
+ *       3:
+ *         description: Failed to delete transaction
+ */
 export async function GET(request: Request) {
 
     const urlParams = new URLSearchParams(request.url.split('?')[1]);
@@ -47,7 +93,7 @@ export async function GET(request: Request) {
     } else {
         response = {
             code: 2,
-            message: `Sorry. You can't do that`,
+            message: `Failed to delete the transaction`,
         }
     }
 
