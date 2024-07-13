@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 import { useState, useEffect } from 'react';
 
-import Dashboard from '@/app/dashboard/transactions/page';
+import Dashboard from '@/app/transactions/page';
 import Login from '@/app/login/page';
 
 export default function Page() {

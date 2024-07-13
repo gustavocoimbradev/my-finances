@@ -1,7 +1,7 @@
-@import '@/app/scss/mixins/desktop';
-@import '@/app/scss/global/variables';
+@import '@/styles/mixins/desktop';
+@import '@/styles/global/variables';
 
-.dashboard {
+.transactions {
     background: white;
     border-radius: 8px;
     width: 100%; 

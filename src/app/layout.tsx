@@ -1,7 +1,7 @@
 'use client';
 
 import { Inter } from "next/font/google";
-import "@/app/scss/style.scss";
+import "@/styles/style.scss";
 
 import Cookies from 'js-cookie'; 
 import { useState, useEffect } from 'react';

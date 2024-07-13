@@ -1,12 +1,12 @@
-@import '@/app/scss/mixins/desktop';
-@import '@/app/scss/global/variables';
+@import '@/styles/mixins/desktop';
+@import '@/styles/global/variables';
 
-.login {
+.register {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100dvh;
-    background: $primaryColor;
+    background: $secondaryColor;
 
     &__box {
         background: white;
@@ -37,12 +37,6 @@
                 font-weight: 600;
                 color: darken($primaryColor, 70%);
                 font-size: 18px; 
-                margin: 0;
-            }
-            h5 {
-                font-weight: 400;
-                color: darken($primaryColor, 70%);
-                font-size: 12px;
                 margin: 0 0 7px;
             }
         }
