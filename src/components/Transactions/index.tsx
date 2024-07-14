@@ -9,13 +9,13 @@ import Table from '@/components/Transactions/Table';
 import Balance from '@/components/Transactions/Balance';
 import Options from '@/components/Transactions/Options';
 
-import { getCurrentDate } from '@/utils/Transactions/getCurrentDate';
-import { calculateBalancePaid } from '@/utils/Transactions/calculateBalancePaid';
-import { calculateBalanceNotPaid } from '@/utils/Transactions/calculateBalanceNotPaid';
-import { formatDate } from '@/utils/Transactions/formatDate';
-import { formatPeriod } from '@/utils/Transactions/formatPeriod';
-import { closePopup } from '@/utils/Transactions/closePopup';
-import { closeAllPopups } from '@/utils/Transactions/closeAllPopups';
+import { getCurrentDate } from '@/utils/getCurrentDate';
+import { calculateBalancePaid } from '@/utils/calculateBalancePaid';
+import { calculateBalanceNotPaid } from '@/utils/calculateBalanceNotPaid';
+import { formatDate } from '@/utils/formatDate';
+import { formatPeriod } from '@/utils/formatPeriod';
+import { closePopup } from '@/utils/closePopup';
+import { closeAllPopups } from '@/utils/closeAllPopups';
 
 export default function Page(){
 
@@ -39,7 +39,7 @@ export default function Page(){
     const [paid, setPaid] = useState('0' as string);
     const [currentDate, setCurrentDate] = useState('' as string);
 
-    // Request
+    // Request 
 
     const fetchTransactions = async (period:string) => {
         const response = await fetch(`/api/transactions?date=${period}&token=${Cookies.get('userLogged')}`);
