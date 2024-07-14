@@ -40,7 +40,6 @@ export default function Page(){
     const [currentDate, setCurrentDate] = useState('' as string);
  
     // Request 
-
     const fetchTransactions = async (period:string) => {
         const response = await fetch(`/api/transactions?date=${period}&token=${Cookies.get('userLogged')}`);
         const data = await response.json();
