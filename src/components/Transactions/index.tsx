@@ -38,7 +38,7 @@ export default function Page(){
     const [recurring, setRecurring] = useState('0' as string);
     const [paid, setPaid] = useState('0' as string);
     const [currentDate, setCurrentDate] = useState('' as string);
-
+ 
     // Request 
 
     const fetchTransactions = async (period:string) => {
